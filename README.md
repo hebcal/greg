@@ -22,6 +22,6 @@ import (
 func main() {
 	rataDie := greg.ToRD(1995, time.December, 17)
 	fmt.Println(rataDie)
-  // Output: 728644
+	// Output: 728644
 }
 ```
