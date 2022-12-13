@@ -5,7 +5,8 @@
 [![GoDoc](https://pkg.go.dev/badge/github.com/hebcal/greg?status.svg)](https://pkg.go.dev/github.com/hebcal/greg)
 
 Hebcal's greg package converts between Gregorian dates
-and R.D. (Rata Die) day numbers.
+and R.D. ([Rata Die](https://en.wikipedia.org/wiki/Rata_Die))
+day numbers.
 
 Example
 
