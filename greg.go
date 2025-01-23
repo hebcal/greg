@@ -39,11 +39,19 @@ func DaysIn(m time.Month, year int) int {
 	return monthLen[m]
 }
 
-// Returns true if the Gregorian year is a leap year.
+// Returns true if the year is a leap year
 func IsLeapYear(year int) bool {
-	gyear := int64(year)
-	if mod(gyear, 4) == 0 {
-		n := mod(gyear, 400)
+
+	y := int64(year)
+
+	// adjust and pretend 0 was a valid year to simplify the math
+	// this change is internal and localized to this function
+	if y < 0 {
+		y++
+	}
+
+	if mod(y, 4) == 0 {
+		n := mod(y, 400)
 		if n != 100 && n != 200 && n != 300 {
 			return true
 		}
@@ -75,9 +83,21 @@ func monthOffset(year int, month time.Month) int {
 
 // Converts Gregorian date to absolute R.D. (Rata Die) days.
 //
-// Panics if Gregorian year is 0.
+// Panics if Gregorian year is 0
 func ToRD(year int, month time.Month, day int) int64 {
-	py := int64(year - 1)
+
+	if year == 0 {
+		panic("Error: There was no year 0")
+	}
+
+	var py int64
+
+	if year > 0 {
+		py = int64(year - 1)
+	} else {
+		py = int64(year)
+	}
+
 	abs := 365*py + // days up to preceding year
 		quotient(py, 4) - // add in Julian leap years
 		quotient(py, 100) + // subtract out century leap years
@@ -111,10 +131,21 @@ func yearFromFixed(rataDie int64) int {
 	year := 400*n400 + 100*n100 + 4*n4 + n1 // total years
 	yy := int(year)
 
+	// at this point, year 1 is represented as 0
+	if yy < 0 {
+		yy -= 1
+	}
+
 	// if we didn't get a 4-year block (with a leap day in it), but we did get 4 separate years
 	// it must be December 31 on the previous year (because there was a leap day). So don't add 1
 	if n100 == 4 || n1 == 4 {
-		return yy
+
+		// but first, if yy is 0, then we are actually in 1 BCE
+		if yy != 0 {
+			return yy
+		} else {
+			return -1
+		}
 	}
 
 	// otherwise it is the next year (because there is no year 0, so generally add 1)
