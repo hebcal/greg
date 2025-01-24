@@ -4,9 +4,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/hebcal/greg)](https://goreportcard.com/report/github.com/hebcal/greg)
 [![GoDoc](https://pkg.go.dev/badge/github.com/hebcal/greg?status.svg)](https://pkg.go.dev/github.com/hebcal/greg)
 
-Hebcal's greg package converts between Gregorian dates
+Hebcal's greg package converts between Gregorian/Julian dates
 and R.D. ([Rata Die](https://en.wikipedia.org/wiki/Rata_Die))
-day numbers.
+day numbers. Dates before September 14, 1752 are interpreted using the Julian calendar.
 
 Example
 
