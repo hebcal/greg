@@ -158,19 +158,6 @@ func TestProlepticRD2GregNegative(t *testing.T) {
 	assert.Equal(31, day)
 }
 
-func ExampleProlepticDaysIn() {
-	days := greg.ProlepticDaysIn(time.February, 2004)
-	fmt.Println(days)
-	// Output: 29
-}
-
-func ExampleProlepticDateToRD() {
-	t := time.Date(2014, time.February, 19, 0, 0, 0, 0, time.UTC)
-	rataDie := greg.ProlepticDateToRD(t)
-	fmt.Println(rataDie)
-	// Output: 735283
-}
-
 func ExampleProlepticToRD() {
 	rataDie := greg.ProlepticToRD(1995, time.December, 17)
 	fmt.Println(rataDie)

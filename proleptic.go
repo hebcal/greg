@@ -23,18 +23,9 @@ import (
 	"time"
 )
 
-// ProlepticDaysIn returns the number of days in the Gregorian month
-// using the Proleptic Gregorian calendar.
-func ProlepticDaysIn(m time.Month, year int) int {
-	if m == time.February && ProlepticIsLeapYear(year) {
-		return 29
-	}
-	return monthLen[m]
-}
-
 // Returns true if the Gregorian year is a leap year
 // using the Proleptic Gregorian calendar.
-func ProlepticIsLeapYear(year int) bool {
+func prolepticIsLeapYear(year int) bool {
 	gyear := int64(year)
 	if mod(gyear, 4) == 0 {
 		n := mod(gyear, 400)
@@ -45,19 +36,10 @@ func ProlepticIsLeapYear(year int) bool {
 	return false
 }
 
-// Converts Gregorian date to absolute R.D. (Rata Die) days
-// using the Proleptic Gregorian calendar.
-// Hours, minutes and seconds are ignored
-func ProlepticDateToRD(t time.Time) int64 {
-	year, month, day := t.Date()
-	abs := ProlepticToRD(year, month, day)
-	return abs
-}
-
 func prolepticMonthOffset(year int, month time.Month) int {
 	if month <= time.February {
 		return 0
-	} else if ProlepticIsLeapYear(year) {
+	} else if prolepticIsLeapYear(year) {
 		return -1
 	} else {
 		return -2
@@ -108,7 +90,7 @@ func ProlepticFromRD(rataDie int64) (int, time.Month, int) {
 	var correction int64
 	if rataDie < ProlepticToRD(year, time.March, 1) {
 		correction = 0
-	} else if ProlepticIsLeapYear(year) {
+	} else if prolepticIsLeapYear(year) {
 		correction = 1
 	} else {
 		correction = 2
